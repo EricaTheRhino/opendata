@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 from mechanize import Browser
-import re
+import re, rdflib
 
 class rhinoMotd:
 	def message(self):
 		return self.weatherMessage()
+	def zoobornMessage(self):
+		return ""
 	def weatherMessage(self):
 		url = 'http://open.live.bbc.co.uk/weather/feeds/en/2637487/observations.rss'
 		br = Browser()
