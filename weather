@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+from urllib import urlencode 
+from urllib2 import urlopen
+import json
+
+localfile = "/home/pi/ecsrhino/twoscreens/data/weather.json"
+remoteurl = "http://users.ecs.soton.ac.uk/ads04r/opendata/southampton-weather.json"
+
+def rhinoCommand(command, params):
+
+	posturl = "http://brain/events/"
+
+	data = {}
+	data['event'] = command
+	data['params'] = params
+
+	content = urlopen(url=posturl, data=json.dumps(data)).read()
+	return json.loads(content)
+
+f = open(localfile, "r")
+s = f.read()
+f.close()
+weather = json.loads(urlopen(remoteurl).read())
+lastweather = json.loads(s)
+newtemp = weather['temperature']
+oldtemp = lastweather['temperature']
+
+if newtemp != oldtemp:
+	params = {}
+	params['temperature'] = newtemp
+	rhinoCommand("rhino.temperature", params)
+
+f = open(localfile, "w")
+f.write(json.dumps(weather))
+f.close()
+
+
