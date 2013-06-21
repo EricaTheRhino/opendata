@@ -25,11 +25,18 @@ weather = json.loads(urlopen(remoteurl).read())
 lastweather = json.loads(s)
 newtemp = weather['temperature']
 oldtemp = lastweather['temperature']
+newpollen = weather['pollen']
+oldpollen = weather['pollen']
 
 if newtemp != oldtemp:
 	params = {}
 	params['temperature'] = newtemp
-	rhinoCommand("rhino.temperature", params)
+	rhinoCommand("opendata.weather.temperature", params)
+
+if newpollen != oldpollen:
+	params = {}
+	params['pollen'] = newpollen
+	rhinoCommand("opendata.weather.pollen", params)
 
 f = open(localfile, "w")
 f.write(json.dumps(weather))
