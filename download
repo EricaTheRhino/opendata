@@ -1,5 +1,6 @@
 wget -O $1/erica_friends.json http://users.ecs.soton.ac.uk/ads04r/opendata/erica_friends.json > /dev/null 2> /dev/null
 wget -O $1/erica_tweets.json http://users.ecs.soton.ac.uk/ads04r/opendata/erica_tweets.json > /dev/null 2> /dev/null
-wget -O $1/brain_state.json http://127.0.0.1/state/ > /dev/null 2> /dev/null
+wget -O $1/rhinos.json http://users.ecs.soton.ac.uk/ads04r/opendata/gorhinos.json > /dev/null 2> /dev/null
+wget -O $1/brain_state.json http://brain/state/ > /dev/null 2> /dev/null
 wget -O $1/commands.json http://users.ecs.soton.ac.uk/ads04r/opendata/erica_commands.json > /dev/null 2> /dev/null
 curl --form "fileupload=@$1/brain_state.json" http://rhino.data.southampton.ac.uk/receive.php
