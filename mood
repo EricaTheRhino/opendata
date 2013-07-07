@@ -1,0 +1,70 @@
+#!/usr/bin/python
+
+from urllib import urlopen
+import json
+
+brain_dump = "/home/pi/ecsrhino/twoscreens/data/brain_state.json"
+mood_file = "/home/pi/ecsrhino/twoscreens/data/mood.json"
+image_path = "/home/pi/ecsrhino/twoscreens/graphics/erica"
+brain_url = "http://brain/state/"
+
+importance = {}
+
+importance['asleep'] = 3
+importance['sleepy'] = 2
+importance['tired'] = 1
+importance['awake'] = 0
+importance['alert'] = 1
+importance['excited'] = 2
+importance['hyperactive'] = 2
+
+importance['starving'] = 3
+importance['hungry'] = 2
+importance['peckish'] = 1
+importance['satisfied'] = 0
+importance['well_fed'] = 1
+importance['full'] = 2
+importance['stuffed'] = 3
+
+importance['very_bored'] = 2
+importance['bored'] = 1
+importance['curious'] = 0
+importance['interested'] = 1
+importance['fascinated'] = 2
+importance['enthused'] = 3
+importance['very_interested'] = 3
+ 
+importance['tearful'] = 3
+importance['teary'] = 3
+importance['grumpy'] = 2
+importance['unhappy'] = 2
+importance['sad'] = 1
+importance['content'] = 0
+importance['happy'] = 1
+importance['very_happy'] = 2
+importance['overjoyed'] = 3
+
+brain_json = urlopen(brain_url)
+s = brain_json.read()
+f = open(brain_dump, "w")
+f.write(s)
+f.close()
+brain = json.loads(s)
+moods = brain['moods']
+
+overall = 'content'
+moodimportance = 0
+for mood in moods:
+	if mood in importance:
+		if importance[mood] > moodimportance:
+			moodimportance = importance[mood]
+			overall = mood
+
+j = {}
+j['mood'] = overall
+j['importance'] = moodimportance
+
+f = open(mood_file, "w")
+f.write(json.dumps(j))
+f.close()
+
