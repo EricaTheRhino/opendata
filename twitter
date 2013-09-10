@@ -1,0 +1,28 @@
+#!/usr/bin/python
+
+from urllib import urlopen, urlretrieve
+import json, os
+
+image_path = "/home/pi/ecsrhino/twoscreens/graphics/twitter"
+friends_url = "http://users.ecs.soton.ac.uk/ads04r/opendata/erica_friends.json"
+friends_local = "/home/pi/ecsrhino/twoscreens/data/erica_friends.json"
+
+friends_json = urlopen(friends_url)
+s = friends_json.read()
+friends = json.loads(s)
+
+for friend in friends:
+	id = friend['id_num']
+	username = friend['id']
+	name = friend['name']
+	image_url = friend['image']
+	parse = image_url.split('.')
+	image_format = parse[len(parse) - 1]
+	image = image_path + '/' + id + '.' + image_format
+	if not(os.path.exists(image)):
+		urlretrieve(image_url, image)
+
+f = open(friends_local, 'w')
+f.write(s)
+f.close()
+
